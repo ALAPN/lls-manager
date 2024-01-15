@@ -32,7 +32,7 @@ public class LlsPasswdCommand implements Command {
     @Override
     public LiteralArgumentBuilder<CommandSource> createSubCommand() {
         return LiteralArgumentBuilder
-                .<CommandSource>literal("lls_passwd")
+                .<CommandSource>literal("changepasswd")
                 .requires(commandSource -> commandSource instanceof Player player &&
                         !llsManager.getLlsPlayer(player).getOnlineMode())
                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("password", StringArgumentType.string()).then(
@@ -47,12 +47,12 @@ public class LlsPasswdCommand implements Command {
         String password = commandContext.getArgument("password", String.class);
         String passwordConfirm = commandContext.getArgument("passwordConfirm", String.class);
         if (!password.equals(passwordConfirm)) {
-            player.sendMessage(Component.translatable("lls-manager.command.lls_passwd.password_error", NamedTextColor.RED));
+            player.sendMessage(Component.translatable("lls-manager.command.changepasswd.password_error", NamedTextColor.RED));
             return 0;
         }
         password = BCrypt.hashpw(password, BCrypt.gensalt());
         if (llsPlayer.setPassword(password)) {
-            player.sendMessage(Component.translatable("lls-manager.command.lls_passwd.success", NamedTextColor.GREEN));
+            player.sendMessage(Component.translatable("lls-manager.command.changepasswd.success", NamedTextColor.GREEN));
             return 1;
         } else {
             CommandUtil.saveDataFail("password", player.getUsername(), player);

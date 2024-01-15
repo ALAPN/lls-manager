@@ -32,7 +32,7 @@ public class LlsRegisterCommand implements Command {
     @Override
     public LiteralArgumentBuilder<CommandSource> createSubCommand() {
         return LiteralArgumentBuilder
-                .<CommandSource>literal("lls_register")
+                .<CommandSource>literal("register")
                 .requires(commandSource -> commandSource instanceof Player player &&
                         llsManager.getLlsPlayer(player).status == LlsPlayer.Status.NEED_REGISTER)
                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("password", StringArgumentType.string()).then(
@@ -48,7 +48,7 @@ public class LlsRegisterCommand implements Command {
         String password = commandContext.getArgument("password", String.class);
         String passwordConfirm = commandContext.getArgument("passwordConfirm", String.class);
         if (!password.equals(passwordConfirm)) {
-            commandContext.getSource().sendMessage(Component.translatable("lls-manager.command.lls_register.password_error", NamedTextColor.RED));
+            commandContext.getSource().sendMessage(Component.translatable("lls-manager.command.register.password_error", NamedTextColor.RED));
             return 0;
         }
         password = BCrypt.hashpw(password, BCrypt.gensalt());
@@ -57,8 +57,8 @@ public class LlsRegisterCommand implements Command {
             return 0;
         } else {
             llsPlayer.status = LlsPlayer.Status.NEED_LOGIN;
-            player.sendMessage(Component.translatable("lls-manager.command.lls_register.success", NamedTextColor.GREEN));
-            player.sendMessage(Component.translatable("lls-manager.command.lls_login.hint"));
+            player.sendMessage(Component.translatable("lls-manager.command.register.success", NamedTextColor.GREEN));
+            player.sendMessage(Component.translatable("lls-manager.command.login.hint"));
             return 1;
         }
     }

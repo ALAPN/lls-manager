@@ -34,7 +34,7 @@ public class LlsLoginCommand implements Command {
     @Override
     public LiteralArgumentBuilder<CommandSource> createSubCommand() {
         return LiteralArgumentBuilder
-                .<CommandSource>literal("lls_login")
+                .<CommandSource>literal("login")
                 .requires(commandSource -> commandSource instanceof Player player &&
                         llsManager.getLlsPlayer(player).status != LlsPlayer.Status.LOGGED_IN)
                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("password", StringArgumentType.string())
@@ -47,11 +47,11 @@ public class LlsLoginCommand implements Command {
         LlsPlayer llsPlayer = llsManager.getLlsPlayer(player);
         String password = commandContext.getArgument("password", String.class);
         if (!BCrypt.checkpw(password, llsPlayer.getPassword())) {
-            player.sendMessage(Component.translatable("lls-manager.command.lls_login.password_error", NamedTextColor.RED));
+            player.sendMessage(Component.translatable("lls-manager.command.login.password_error", NamedTextColor.RED));
             return 0;
         }
         llsPlayer.status = LlsPlayer.Status.LOGGED_IN;
-        player.sendMessage(Component.translatable("lls-manager.command.lls_login.success", NamedTextColor.GREEN));
+        player.sendMessage(Component.translatable("lls-manager.command.login.success", NamedTextColor.GREEN));
         Optional<RegisteredServer> registeredServerOptional = llsManager.server.getServer(llsPlayer.getLastServerName());
         registeredServerOptional.ifPresent(registeredServer -> player.createConnectionRequest(registeredServer).connect());
         return 1;

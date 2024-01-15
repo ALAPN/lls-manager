@@ -92,8 +92,8 @@ public class OfflineAuthHandler {
             LlsPlayer.Status status = llsManager.getLlsPlayer(player).status;
             String commandName = event.getCommand().split(" ")[0];
             if (status != LlsPlayer.Status.LOGGED_IN) {
-                if (!(status == LlsPlayer.Status.NEED_REGISTER && commandName.equals("lls_register")) &&
-                        !(status == LlsPlayer.Status.NEED_LOGIN && commandName.equals("lls_login"))) {
+                if (!(status == LlsPlayer.Status.NEED_REGISTER && commandName.equals("register")) &&
+                        !(status == LlsPlayer.Status.NEED_LOGIN && commandName.equals("login"))) {
                     event.setResult(CommandExecuteEvent.CommandResult.denied());
                 }
             }
@@ -107,7 +107,7 @@ public class OfflineAuthHandler {
                 commandNode -> {
                     String commandName = commandNode.getName();
                     if (status != LlsPlayer.Status.LOGGED_IN) {
-                        return !commandName.equals("lls_register") && !commandName.equals("lls_login") && !commandName.equals("server");
+                        return !commandName.equals("register") && !commandName.equals("login") && !commandName.equals("server");
                     }
                     return false;
                 }
@@ -120,9 +120,9 @@ public class OfflineAuthHandler {
         LlsPlayer llsPlayer = llsManager.getLlsPlayer(player);
 
         if (llsPlayer.status == LlsPlayer.Status.NEED_LOGIN) {
-            player.sendMessage(Component.translatable("lls-manager.command.lls_login.hint"));
+            player.sendMessage(Component.translatable("lls-manager.command.login.hint"));
         } else if (llsPlayer.status == LlsPlayer.Status.NEED_REGISTER) {
-            player.sendMessage(Component.translatable("lls-manager.command.lls_register.hint"));
+            player.sendMessage(Component.translatable("lls-manager.command.register.hint"));
         }
 
     }
